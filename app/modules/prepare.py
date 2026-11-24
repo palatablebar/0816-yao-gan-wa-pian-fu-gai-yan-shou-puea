@@ -16,6 +16,6 @@ def prepare(rows):
             clipped.append(box)
     return prepared(
         len(clipped),
-        {"region_cells": (c - a) * (d - b)},
+        {"region_cells": (c - a) * (d - b), "region": [a, b, c, d]},
         (clipped, (c - a) * (d - b), region["min_cells"]),
     )

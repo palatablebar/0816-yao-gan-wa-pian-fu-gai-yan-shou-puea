@@ -1,9 +1,9 @@
 from datetime import datetime, timezone
-from hashlib import sha256
 from time import monotonic
 
 from app.business import DomainIssue
-from app.config import RULE_VERSION
+from app.modules.dispatch import assess
+from app.modules.manifest import source_manifest
 from app.modules.pipeline import run
 
 
@@ -11,24 +11,24 @@ def now():
     return datetime.now(timezone.utc).isoformat(timespec="milliseconds")
 
 
+def stamp():
+    return now()
+
+
 def execute(store, data):
     start = monotonic()
-    fingerprint = sha256(data).hexdigest()
-    run_id = sha256(f"{RULE_VERSION}:{fingerprint}".encode()).hexdigest()
+    manifest = source_manifest(data, now())
+    run_id = manifest["run_id"]
     try:
         return store.load(run_id)
     except DomainIssue as error:
         if error.code != "RUN_NOT_FOUND":
             raise
     report = run(data)
-    report["manifest"] = dict(
-        sha256=fingerprint,
-        version=RULE_VERSION,
-        created=now(),
-        duration_ms=round((monotonic() - start) * 1000, 3),
-        bytes=len(data),
-        run_id=run_id,
-    )
+    manifest["duration_ms"] = round((monotonic() - start) * 1000, 3)
+    manifest["created"] = now()
+    report["manifest"] = manifest
+    report["dispatch"] = assess(report)
     return store.register(run_id, report)
 
 

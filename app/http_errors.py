@@ -17,18 +17,34 @@ LABELS = {
     "UNRESOLVED_ISSUES": "存在待处理差异",
     "SAMPLE_UNKNOWN": "样例不存在",
     "STAGE_UNKNOWN": "处理阶段不存在",
+    "PACKAGE_NOT_FOUND": "补测包不存在",
+    "PACKAGE_NOT_DISPATCHED": "补测包尚未派发",
+    "PACKAGE_CLOSED": "补测包已关闭，不能追加覆盖",
+    "PACKAGE_SUPERSEDED": "规则版本更新，该补测包已失效",
+    "PACKAGE_STATUS_UNKNOWN": "补测包状态不存在",
+    "DISPATCH_BLOCKED": "来源、采信、隔离或缺口未对平，不能派发",
+    "COVERAGE_REQUIRED": "请提供新增覆盖范围",
+    "COVERAGE_INVALID": "覆盖范围必须是 x0<x1、y0<y1 的整数矩形",
 }
 
 
 def response(error):
     code = error.code
-    status = (
-        404
-        if code in {"RUN_NOT_FOUND", "SAMPLE_UNKNOWN", "STAGE_UNKNOWN"}
-        else (
-            409
-            if code in {"STALE_REVIEW", "RUN_FINALIZED", "UNRESOLVED_ISSUES"}
-            else 413 if code == "FILE_TOO_LARGE" else 422
-        )
-    )
+    if code in {"RUN_NOT_FOUND", "SAMPLE_UNKNOWN", "STAGE_UNKNOWN", "PACKAGE_NOT_FOUND",
+                "PACKAGE_STATUS_UNKNOWN"}:
+        status = 404
+    elif code in {
+        "STALE_REVIEW",
+        "RUN_FINALIZED",
+        "UNRESOLVED_ISSUES",
+        "PACKAGE_CLOSED",
+        "PACKAGE_SUPERSEDED",
+        "PACKAGE_NOT_DISPATCHED",
+        "DISPATCH_BLOCKED",
+    }:
+        status = 409
+    elif code == "FILE_TOO_LARGE":
+        status = 413
+    else:
+        status = 422
     return jsonify(code=code, message=LABELS.get(code, code)), status

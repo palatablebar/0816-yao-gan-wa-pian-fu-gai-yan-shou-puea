@@ -26,6 +26,20 @@
   <div class="scroll"><table id="rows" aria-label="阶段结果"></table></div>
 </section>
 {% endmacro %}
+{% macro packages() %}
+<section class="panel packages" aria-labelledby="packages-title">
+  <div class="panel-head"><h2 id="packages-title">补测包</h2><span id="dispatch-state"></span></div>
+  <p id="dispatch-checks" class="checks"></p>
+  <div class="scroll"><table id="package-rows" aria-label="补测包"></table></div>
+  <div class="review-actions"><button id="dispatch" class="action" type="button" disabled>派发补测包</button></div>
+  <form id="coverage" hidden>
+    <p id="package-state"></p>
+    <label for="coverage-input">新增覆盖（JSON 矩形，如 [[0,0,1,3]]）</label>
+    <textarea id="coverage-input" required></textarea>
+    <div class="review-actions"><button class="action" type="submit">登记新增覆盖</button></div>
+  </form>
+</section>
+{% endmacro %}
 {% macro visual(p) %}
 <section class="panel chart" aria-label="结果图"><h2>{{ p.chart }}</h2><div id="visual"></div></section>
 {% endmacro %}

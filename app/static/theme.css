@@ -6,7 +6,7 @@
   color-scheme:light; }
 * {box-sizing:border-box} [hidden] {display:none!important}
 body.tiles {margin:0;background:var(--bg);color:var(--ink);font:var(--size)/1.55 var(--font-ui)}
-.tiles .desk {display:grid;grid-template-areas:"mast mast mast" "stages stages stages" "source kpis kpis" "chart chart inspection" "chart chart results" "archive archive archive" "statusbar statusbar statusbar";grid-template-columns:.85fr .8fr 1.3fr;gap:var(--gap);margin:auto;padding:clamp(14px,3vw,42px);max-width:1650px}
+.tiles .desk {display:grid;grid-template-areas:"mast mast mast" "stages stages stages" "source kpis kpis" "chart chart inspection" "chart chart results" "packages packages packages" "archive archive archive" "statusbar statusbar statusbar";grid-template-columns:.85fr .8fr 1.3fr;gap:var(--gap);margin:auto;padding:clamp(14px,3vw,42px);max-width:1650px}
 .tiles .mast {grid-area:mast;background:var(--surface);padding:var(--pad);min-width:0}
 .tiles .mast h1 {font:700 clamp(26px,4vw,66px)/1.1 var(--font-display);margin:0;overflow-wrap:anywhere}
 .tiles .role {color:var(--accent);margin:0 0 11px;font-weight:700}
@@ -24,7 +24,7 @@ body.tiles {margin:0;background:var(--bg);color:var(--ink);font:var(--size)/1.55
 .tiles .metric {background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:var(--pad);display:grid;align-content:center}
 .tiles .metric strong {font:600 clamp(22px,4vw,53px)/1.05 var(--font-num);font-variant-numeric:tabular-nums}
 .tiles .panel {background:var(--surface);padding:var(--pad);min-width:0;border:1px solid var(--line);border-radius:var(--radius)}
-.tiles .results {grid-area:results} .tiles .chart {grid-area:chart} .tiles .inspection {grid-area:inspection} .tiles .archive {grid-area:archive}
+.tiles .results {grid-area:results} .tiles .chart {grid-area:chart} .tiles .inspection {grid-area:inspection} .tiles .packages {grid-area:packages} .tiles .archive {grid-area:archive}
 .tiles h2 {font-size:18px;margin:0 0 10px} .tiles .panel-head {display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;justify-content:space-between}
 .tiles #counts,.tiles #run-status {color:var(--sub);overflow-wrap:anywhere}
 .tiles .scroll {overflow:auto;max-height:270px}
@@ -42,8 +42,8 @@ body.tiles {margin:0;background:var(--bg);color:var(--ink);font:var(--size)/1.55
 .tiles .chart #visual {min-height:180px}
 .tiles .inspection{border:2px dashed var(--line)}
 .tiles .stages button {border-radius:0}
-@media(max-width:1120px) { .tiles .desk {grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"mast mast" "source source" "stages stages" "kpis kpis" "results results" "chart inspection" "archive archive" "statusbar statusbar"} }
-@media(max-width:630px) { .tiles .desk {grid-template-columns:minmax(0,1fr);grid-template-areas:"mast" "source" "stages" "kpis" "chart" "results" "inspection" "archive" "statusbar"} .tiles .kpis {grid-template-columns:repeat(2,minmax(0,1fr))} .tiles .chart #visual {display:block!important} .tiles .stages button {width:auto} }
+@media(max-width:1120px) { .tiles .desk {grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-areas:"mast mast" "source source" "stages stages" "kpis kpis" "results results" "chart inspection" "packages packages" "archive archive" "statusbar statusbar"} }
+@media(max-width:630px) { .tiles .desk {grid-template-columns:minmax(0,1fr);grid-template-areas:"mast" "source" "stages" "kpis" "chart" "results" "inspection" "packages" "archive" "statusbar"} .tiles .kpis {grid-template-columns:repeat(2,minmax(0,1fr))} .tiles .chart #visual {display:block!important} .tiles .stages button {width:auto} }
 @media print { .tiles .source,.tiles .stages,.tiles .archive,.tiles .statusbar {display:none} .tiles .desk {display:block} }
 
 .mark-piece {background:var(--accent);color:var(--surface);min-width:0}
@@ -53,3 +53,9 @@ body.tiles {margin:0;background:var(--bg);color:var(--ink);font:var(--size)/1.55
 .coverage-filled {background:var(--accent)}
 .coverage-hole {background:var(--surface)}
 .coverage-legend {padding-top:8px}
+
+.tiles .checks {margin:0 0 8px;color:var(--sub);overflow-wrap:anywhere}
+.tiles #package-state {color:var(--sub)}
+.tiles #coverage {max-width:580px;margin-top:10px}
+.tiles #coverage textarea {display:block;width:100%;min-height:44px;cursor:text}
+.tiles .badge[data-result="CLOSED"] {color:var(--accent)}
